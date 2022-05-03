@@ -40,10 +40,10 @@ if exists('*nvim_win_get_cursor')
   function! s:self.get_cursor(winid) abort
     return nvim_win_get_cursor(a:winid)
   endfunction
-elseif g:_spacevim_if_lua
-  function! s:self.get_cursor(winid) abort
-    lua require("spacevim.api.vim.window").get_cursor(vim.eval("a:winid"))
-  endfunction
+" elseif g:_spacevim_if_lua
+  " function! s:self.get_cursor(winid) abort
+  "   lua require("spacevim.api.vim.window").get_cursor(vim.eval("a:winid"))
+  " endfunction
 else
   function! s:self.get_cursor(winid) abort
 
@@ -63,10 +63,10 @@ elseif exists('*win_execute')
     " call win_execute(a:win, ':' . a:pos[0])
     call win_execute(a:win, ':normal! g"')
   endfunction
-elseif g:_spacevim_if_lua
-  function! s:self.set_cursor(winid, pos) abort
-    lua require("spacevim.api.vim.window").set_cursor(vim.eval("a:winid"), vim.eval("a:pos"))
-  endfunction
+" elseif g:_spacevim_if_lua
+  " function! s:self.set_cursor(winid, pos) abort
+  "   lua require("spacevim.api.vim.window").set_cursor(vim.eval("a:winid"), vim.eval("a:pos"))
+  " endfunction
 else
   function! s:self.set_cursor(winid, pos) abort
   endfunction
