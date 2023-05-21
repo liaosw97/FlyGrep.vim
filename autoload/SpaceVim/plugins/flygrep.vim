@@ -1,6 +1,6 @@
 "=============================================================================
 " flygrep.vim --- Grep on the fly in SpaceVim
-" Copyright (c) 2016-2022 Wang Shidong & Contributors
+" Copyright (c) 2016-2023 Wang Shidong & Contributors
 " Author: Shidong Wang < wsdjeg@outlook.com >
 " URL: https://spacevim.org
 " License: GPLv3
@@ -76,9 +76,11 @@ function! s:update_history() abort
   endif
   call add(s:grep_history, s:grep_expr)
   if !isdirectory(expand(g:spacevim_data_dir.'SpaceVim'))
-    call mkdir(expand(g:spacevim_data_dir.'SpaceVim'))
+    silent call mkdir(expand(g:spacevim_data_dir.'SpaceVim'))
   endif
-  call writefile([s:JSON.json_encode(s:grep_history)], expand(g:spacevim_data_dir.'SpaceVim/flygrep_history'))
+  if filewritable(expand(g:spacevim_data_dir.'SpaceVim/flygrep_history'))
+    call writefile([s:JSON.json_encode(s:grep_history)], expand(g:spacevim_data_dir.'SpaceVim/flygrep_history'))
+  endif
 endfunction
 let s:grep_history = s:read_histroy()
 let s:complete_input_history_num = [0,0]
@@ -743,7 +745,8 @@ endif
 if has('timers')
   function! s:preview() abort
     call timer_stop(s:preview_timer_id)
-    let s:preview_timer_id = timer_start(200, function('s:preview_timer'), {'repeat' : 1})
+    let s:preview_timer_id = timer_start(200,
+          \ function('s:preview_timer'), {'repeat' : 1})
   endfunction
 else
   function! s:preview() abort

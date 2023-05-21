@@ -1,6 +1,6 @@
 "=============================================================================
 " logger.vim --- SpaceVim logger API
-" Copyright (c) 2016-2022 Wang Shidong & Contributors
+" Copyright (c) 2016-2023 Wang Shidong & Contributors
 " Author: Wang Shidong < wsdjeg@outlook.com >
 " URL: https://spacevim.org
 " License: GPLv3
@@ -54,10 +54,10 @@ endfunction
 function! s:self._build_msg(msg, l) abort
   let msg = a:msg
   let time = strftime('%H:%M:%S')
-  let log = printf('[ %s ] [%s] [%00.3f] [ %5s ] %s',
+  let log = printf('[ %s ] [%s] [%8S] [ %5s ] %s',
         \ self.name,
         \ time,
-        \ s:TIME.reltimefloat(reltime(self.clock)),
+        \ printf('%00.3f' ,s:TIME.reltimefloat(reltime(self.clock))),
         \ self.levels[a:l],
         \ msg)
   return log
@@ -90,7 +90,7 @@ function! s:self.warn(msg, ...) abort
     return
   endif
   let log = self._build_msg(a:msg, 2)
-  if (!self.silent && self.verbose >= 2) || get(a:000, 0, 0) == 1
+  if (!self.silent && self.verbose >= 2) || get(a:000, 0, 1) == 0
     echohl WarningMsg
     echom log
     echohl None
